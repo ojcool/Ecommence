@@ -1,7 +1,7 @@
 //action is  function to b export 
 //import { Axios } from 'axios';
 import Axios from 'axios';
-import { PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS } from '../constants/productConstants';
+import { PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS } from '../constants/productConstants';
 
 export const listProducts = () => async (dispatch) => {
     dispatch({
@@ -14,4 +14,27 @@ export const listProducts = () => async (dispatch) => {
         dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
     }
 
+};
+
+
+// Add Redux to Product Screen
+//     1. create product details constants, actions and reducers
+//     2. add reducer to store.js
+//     3. use action in ProductScreen.js
+//     4. add /api/product/:id to backend api
+
+export const detailsProduct = (productId) => async (dispatch) => {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
+    try {
+        const { data } = await Axios.get(`/api/products/${productId}`);
+        dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_DETAILS_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
 };
