@@ -15,6 +15,7 @@ export default function ProductScreen(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
     const productId = id;
+
     const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
 
